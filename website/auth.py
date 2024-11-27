@@ -18,20 +18,20 @@ def logout():
 def register():
     if request.method == "POST":
         email = request.form.get('email')
-        firstName = request.form.get('firstName')
+        first_name = request.form.get('first_name')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
         if len(email) < 4:
             flash("Email must be greater than 4 characters", category="error")
-        elif len(firstName) < 2:
+        elif len(first_name) < 2:
             flash("First name must be greater than 2 characters", category="error")
         elif password1 != password2:
             flash("Passwords must match", category="error")
         elif len(password1) <7:
             flash("Password must be at least 7 characters", category="error")
         else:
-            new_user = User(email=email, firstName=firstName, password1=generate_password_hash(password1, method='sha256'))
+            new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='scrypt'))
             db.session.add(new_user)
             db.session.commit()
             flash("You have successfully registered!", category="success")
